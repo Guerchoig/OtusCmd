@@ -50,18 +50,18 @@ void proceed(bulks_t &bulks)
 
         switch (lexlex)
         {
-        case OpenBr: // '{'
+        case OpenBr:          // '{'
             if (is_dynamic++) // nested '{' are only accounted
                 break;
             output_bulk(bulks.top());
-            
+
             // destroys the old cmd bulk
             bulks.pop();
-            
+
             // Creates & constructs new cmd bulk header
             bulks.push(bulk_t(clock(), OpenBr, 0));
             break;
-        case CloseBr: // '}'
+        case CloseBr:         // '}'
             if (--is_dynamic) // checks for nesting level
                 break;
             output_bulk(bulks.top());
@@ -70,7 +70,7 @@ void proceed(bulks_t &bulks)
             break;
         case Cmd: // command
             bulks.top().cmds.emplace_back(lexema.second);
-            
+
             // for dynamic bulks target_size is 0, for static ones - is equal to bulk_size
             if (bulks.top().cmds.size() == bulks.top().target_size)
             {
@@ -91,7 +91,7 @@ void proceed(bulks_t &bulks)
 /// @brief Just a main proc
 /// @param argc is not used, because the param number is known to be 1
 /// @param argv nof commands in a bulk, is stored into a global var bulk_size
-/// @return 0
+/// @return zero
 int main([[maybe_unused]] int argc, char *argv[])
 {
     bulks_t bulks;
